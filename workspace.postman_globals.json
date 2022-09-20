@@ -1,0 +1,45 @@
+{
+	"id": "d1d76ec8-b766-4fba-861d-07f3eca7ac7f",
+	"values": [
+		{
+			"key": "sysID",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "numberId",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "variable_key",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "issueID",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "desc",
+			"value": "Bug creation Using REST API for testing PUT",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "issueType",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		}
+	],
+	"name": "Globals",
+	"_postman_variable_scope": "globals",
+	"_postman_exported_at": "2022-09-20T04:46:14.639Z",
+	"_postman_exported_using": "Postman/9.31.7"
+}

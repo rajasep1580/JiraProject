@@ -1,0 +1,386 @@
+{
+	"info": {
+		"_postman_id": "6c31380e-9759-4506-b6e7-5a4a3e20b27e",
+		"name": "JiraSep",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "14614298"
+	},
+	"item": [
+		{
+			"name": "CreatIssue",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"jdata=pm.response.json();\r",
+							"pm.test(\"Create issue Passed the value to global\",function(){\r",
+							"     pm.response.to.have.status(201);\r",
+							"     pm.globals.set(\"issueID\",jdata.id);\r",
+							"\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Transfer-Encoding",
+						"value": "application/json",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"fields\": {\r\n    \"project\":\r\n                {\r\n                    \"key\": \"{{ProjectKey}}\"\r\n                },\r\n    \"summary\": \"create issue in RA project\",\r\n    \"description\": \"{{Description}}\",\r\n    \"issuetype\": {\r\n                    \"name\": \"{{IssueTypeName}}\"\r\n                }\r\n    }\r\n}\r\n"
+				},
+				"url": {
+					"raw": "{{JiraURL}}/rest/api/2/issue/",
+					"host": [
+						"{{JiraURL}}"
+					],
+					"path": [
+						"rest",
+						"api",
+						"2",
+						"issue",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getIssue",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"jdata=pm.response.json();\r",
+							"pm.test(\"Get issue validate value to global\",function(){\r",
+							"     pm.response.to.have.status(200);\r",
+							"    issId= pm.globals.get(\"issueID\");\r",
+							"    pm.expect(issId).to.be.eql(jdata.id)\r",
+							"\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{JiraURL}}/rest/api/2/issue/{{issueID}}",
+					"host": [
+						"{{JiraURL}}"
+					],
+					"path": [
+						"rest",
+						"api",
+						"2",
+						"issue",
+						"{{issueID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "updateIssue",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"\r",
+							"pm.test(\"Update/Edit issue value from global\",function(){\r",
+							"     pm.response.to.have.status(204);   \r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"fields\": {\r\n\r\n        \"description\": \"{{desc}} \"\r\n    }\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{JiraURL}}/rest/api/2/issue/{{issueID}}",
+					"host": [
+						"{{JiraURL}}"
+					],
+					"path": [
+						"rest",
+						"api",
+						"2",
+						"issue",
+						"{{issueID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "IssueDescripValidate",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"jdata=pm.response.json();\r",
+							"pm.test(\"Validate the updated Description value to global\",function(){\r",
+							"     pm.response.to.have.status(200);\r",
+							"    descp= pm.globals.get(\"desc\");\r",
+							"    console.log(\" Descritpion >> \"+jdata.fields.description)\r",
+							"    pm.expect(descp.trim()).to.be.include((jdata.fields.description).trim())\r",
+							"\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://api-training.atlassian.net/rest/api/2/issue/{{issueID}}",
+					"protocol": "https",
+					"host": [
+						"api-training",
+						"atlassian",
+						"net"
+					],
+					"path": [
+						"rest",
+						"api",
+						"2",
+						"issue",
+						"{{issueID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetAllIssues",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"jdata=pm.response.json();\r",
+							"pm.test(\"Validate the Get All issues >> \"+jdata.issues.length,function(){\r",
+							"     pm.response.to.have.status(200);\r",
+							"    descp= pm.globals.get(\"desc\");\r",
+							"    console.log(\" Descritpion >> \"+jdata.issues.length)\r",
+							"    //pm.expect(descp.trim()).to.be.include((jdata.issues[0].fields.description).trim())\r",
+							"\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{JiraURL}}/rest/api/2/search?jql=project=\"SEP\"",
+					"host": [
+						"{{JiraURL}}"
+					],
+					"path": [
+						"rest",
+						"api",
+						"2",
+						"search"
+					],
+					"query": [
+						{
+							"key": "jql",
+							"value": "project=\"SEP\""
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeleteIsuue",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"\r",
+							"pm.test(\"Delete the issue\",function(){\r",
+							"     pm.response.to.have.status(204);\r",
+							"    \r",
+							"\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://api-training.atlassian.net/rest/api/2/issue/{{issueID}}",
+					"protocol": "https",
+					"host": [
+						"api-training",
+						"atlassian",
+						"net"
+					],
+					"path": [
+						"rest",
+						"api",
+						"2",
+						"issue",
+						"{{issueID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetListOfIsuues",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"jdata=pm.response.json();\r",
+							"pm.test(\"Validate the Get All issuetype >> \"+jdata.length,function(){\r",
+							"     pm.response.to.have.status(200);\r",
+							"    descp= pm.globals.get(\"desc\");\r",
+							"    if(jdata.length>3){\r",
+							"    console.log(\" Descritpion >> \"+jdata[3].id)\r",
+							"    pm.globals.set(\"issueType\",jdata[3].id)\r",
+							"        }\r",
+							"    //pm.expect(descp.trim()).to.be.include((jdata.issues[0].fields.description).trim())\r",
+							"\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{JiraURL}}/rest/api/2/issuetype",
+					"host": [
+						"{{JiraURL}}"
+					],
+					"path": [
+						"rest",
+						"api",
+						"2",
+						"issuetype"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetSpecificIsuues",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"jdata=pm.response.json();\r",
+							"pm.test(\"Validate the Get All issues >> \"+jdata.id,function(){\r",
+							"     pm.response.to.have.status(200);\r",
+							"    issType= pm.globals.get(\"issueType\");\r",
+							"    console.log(\" Descritpion >> \"+jdata.id)\r",
+							"    pm.expect(issType.trim()).to.be.eql(jdata.id.trim())\r",
+							"\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{JiraURL}}/rest/api/2/issuetype/{{issueType}}",
+					"host": [
+						"{{JiraURL}}"
+					],
+					"path": [
+						"rest",
+						"api",
+						"2",
+						"issuetype",
+						"{{issueType}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "password",
+				"value": "8jTp48m7hZDvcTCm8tiT031C",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "hari.radhakrishnan@testleaf.com",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
